@@ -1,0 +1,149 @@
+﻿@{
+    Layout = "layout";
+}
+<!-- Nội dung của trang "index.cshtml" -->
+<div class="container mt-4">
+    <h1>Task List</h1>
+
+    <!-- Button to open Create Task modal -->
+    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#createTaskModal">
+        Create Task
+    </button>
+
+    <!-- Task List -->
+    <table class="table mt-4" style="text-align:center;vertical-align:middle;">
+        <thead>
+            <tr>
+                <th>Tittle</th>
+                <th>Description</th>
+                <th>Completed</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var task in Model)
+            {
+            <tr>
+                <td>@task.Name</td>
+                <td>@task.Description</td>
+                <td>
+                    <div class="form-check form-switch" style="padding:0;display:flex; align-content:center;flex-wrap:wrap">
+                        @if(@task.Completed){
+                        <input style="margin:0 auto" class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckCheckedDisabled" disabled checked >
+
+                        }
+                        else{
+                        <input style="margin:0 auto" class="form-check-input" type="checkbox" role="switch"  disabled>
+
+                        }
+
+                    </div>
+                </td>
+                <td>
+                    <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#editTaskModal" onclick="editTask(@task.id)">
+                        Edit
+                    </button>
+                    <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteTaskModal" onclick="deleteTask(@task.id)">
+                        Delete
+                    </button>
+                </td>
+            </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+<!-- Create Task Modal -->
+<div class="modal fade" id="createTaskModal" tabindex="-1" role="dialog" aria-labelledby="createTaskModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="createTaskModalLabel">Create Task</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <!-- Add a form to create a new task -->
+                <form id="taskForm">
+                    <div class="form-group">
+                        <label for="taskName">Tên Task:</label>
+                        <input type="text" class="form-control" id="taskName" name="taskName">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="taskDescription">Mô tả Task:</label>
+                        <textarea class="form-control" id="taskDescription" name="taskDescription"></textarea>
+                    </div>
+
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" onclick="createTask()">Tạo Task</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Edit Task Modal -->
+<div class="modal fade" id="editTaskModal" tabindex="-1" role="dialog" aria-labelledby="editTaskModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editTaskModalLabel">Edit Task</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="taskFormEdit">
+                    <div class="form-group">
+                        <label for="editTitle">Tên Task:</label>
+                        <input type="text" class="form-control" id="editTitle" name="editTitle">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="editDescription">Mô tả Task:</label>
+                        <textarea class="form-control" id="editDescription" name="editDescription"></textarea>
+                    </div>
+                    <div class="form-group form-check form-switch" style="padding:0;display:flex">
+
+                        <label for="editCompleted">Hoàn thành:</label>
+
+                        <input style="align-self: flex-end; margin-left: 10px; margin-bottom: 3px;" class="form-check-input" type="checkbox" role="switch" id="editCompleted" >
+
+                    </div>
+                </form>
+                <!-- Add a form to edit an existing task -->
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" onclick="saveEditedTask()">Save Changes</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Delete Task Modal -->
+<div class="modal fade" id="deleteTaskModal" tabindex="-1" role="dialog" aria-labelledby="deleteTaskModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="deleteTaskModalLabel">Delete Task</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <!-- Add a confirmation message for deleting a task -->
+                <h4>Bạn có chắc chắc muốn xóa Task này</h4>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-danger" onclick="saveDeleteTask()">Delete</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Nội dung khác -->
